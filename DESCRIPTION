@@ -1,0 +1,22 @@
+Package: sparklio
+Type: Package
+Title: A Common IO API For sparklyr
+Version: 0.0.1
+Authors@R: person("Nathan", "Eastwood", "", "nathan.eastwood@icloud.com",
+    role = c("aut", "cre"))
+Description: A common API provided to read data from Spark into R and write data
+    to Spark from R.
+URL: https://github.com/nathaneastwood/sparklio
+BugReports: https://github.com/nathaneastwood/sparklio/issues
+Depends:
+    R (>= 3.4)
+Imports:
+    data.table,
+    DBI,
+    dplyr,
+    sparklyr
+License: file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.2
+Roxygen: list(markdown = TRUE)

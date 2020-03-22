@@ -1,0 +1,10 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^.Rprofile$
+^README\.Rmd$
+.lintr
+^CONTRIBUTING\.md$
+^NEWS\.md$
+^LICENSE\.md$
+.gitignore
+.github
