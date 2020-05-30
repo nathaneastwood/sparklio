@@ -6,3 +6,4 @@
 *\.Rcheck
 logs/
 .DS_Store
+derby.log

@@ -1,11 +1,10 @@
 Package: sparklio
 Type: Package
 Title: A Common IO API For sparklyr
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: person("Nathan", "Eastwood", "", "nathan.eastwood@icloud.com",
     role = c("aut", "cre"))
-Description: A common API provided to read data from Spark into R and write data
-    to Spark from R.
+Description: A common API provided for working with data between Spark and R.
 URL: https://github.com/nathaneastwood/sparklio
 BugReports: https://github.com/nathaneastwood/sparklio/issues
 Depends:
@@ -18,5 +17,5 @@ Imports:
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Roxygen: list(markdown = TRUE)

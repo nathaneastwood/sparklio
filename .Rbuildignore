@@ -2,9 +2,12 @@
 ^\.Rproj\.user$
 ^.Rprofile$
 ^README\.Rmd$
-.lintr
 ^CONTRIBUTING\.md$
 ^NEWS\.md$
 ^LICENSE\.md$
-.gitignore
-.github
+^\.lintr$
+^\.gitignore$
+^sparklio\.Rcheck$
+^logs$
+^\.github$
+^derby\.log$
