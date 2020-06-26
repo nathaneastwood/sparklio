@@ -7,3 +7,4 @@
 logs/
 .DS_Store
 derby.log
+sparklio.code-workspace

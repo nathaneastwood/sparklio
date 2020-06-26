@@ -11,3 +11,4 @@
 ^logs$
 ^\.github$
 ^derby\.log$
+^sparklio\.code-workspace$

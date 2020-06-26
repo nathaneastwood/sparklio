@@ -4,7 +4,7 @@
 \alias{spark_push_data}
 \title{Upload Data to Spark}
 \usage{
-spark_push_data(sc, x, name, overwrite = FALSE)
+spark_push_data(sc, x, name, overwrite = FALSE, ...)
 }
 \arguments{
 \item{sc}{A \code{spark_connection}.}

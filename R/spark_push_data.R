@@ -19,7 +19,7 @@
 #' @importFrom sparklyr spark_read_csv
 #' @importFrom data.table fwrite
 #' @export
-spark_push_data <- function(sc, x, name, overwrite = FALSE) {
+spark_push_data <- function(sc, x, name, overwrite = FALSE, ...) {
   if (!is.data.frame(x)) stop("`x` must be a data.frame")
   if (!is.logical(overwrite)) stop("`overwrite` must be a logical value")
   if (isTRUE(name %in% DBI::dbListTables(sc)) && !isTRUE(overwrite)) {
