@@ -1,7 +1,7 @@
 Package: sparklio
 Type: Package
 Title: Utility Functions to Extend 'sparklyr'\'s IO
-Version: 0.0.4
+Version: 0.0.5
 Authors@R: person("Nathan", "Eastwood", "", "nathan.eastwood@icloud.com",
     role = c("aut", "cre"))
 Maintainer: Nathan Eastwood <nathan.eastwood@icloud.com>
@@ -15,6 +15,8 @@ Imports:
     DBI,
     dplyr,
     sparklyr
+Suggests:
+    tinytest
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

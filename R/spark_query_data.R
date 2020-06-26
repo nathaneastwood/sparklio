@@ -39,12 +39,15 @@ spark_query_data <- function(
   name = NULL
 ) {
   type <- match.arg(type, choices = c("lazy", "compute", "collect"))
+  if (missing(name) && type != "collect") {
+    stop("You must provide a `name` if lazily evaluating or computing queries")
+  }
   if (!inherits(x, "sql")) x <- dplyr::sql(x)
   res <- if (type == "collect") {
     dplyr::as_tibble(DBI::dbGetQuery(sc, x))
   } else {
     res <- sparklyr::sdf_register(dplyr::tbl(sc, x), name = name)
-    if (type == "compute") res <- sparklyr::tbl_cache(sc, name)
+    if (type == "compute") sparklyr::tbl_cache(sc, name)
     res
   }
   res
