@@ -18,8 +18,7 @@ spark_pull_data <- function(x, sc = NULL) {
   } else {
     if (is_open_spark_connection(sc)) {
       if (!is.character(x)) x <- deparse(substitute(x))
-      available_tables <- DBI::dbListTables(sc)
-      if (!x %in% available_tables) stop(sQuote(x), " could not be found.")
+      if (!DBI::dbExistsTable(sc, x)) stop(sQuote(x), " could not be found.")
       dplyr::collect(dplyr::tbl(sc, x))
     } else {
       stop("Is `sc` a valid, open Spark connection?")

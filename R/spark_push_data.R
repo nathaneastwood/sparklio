@@ -9,6 +9,7 @@
 #' @param x A `data.frame`.
 #' @param name `character(1)`. The name to give to the data in the Spark
 #' context.
+#' @param overwrite `logical(1)`.
 #' @param ... Additional arguments to be passed on to
 #' [sparklyr::spark_read_csv()].
 #'
@@ -22,7 +23,7 @@
 spark_push_data <- function(sc, x, name, overwrite = FALSE, ...) {
   if (!is.data.frame(x)) stop("`x` must be a data.frame")
   if (!is.logical(overwrite)) stop("`overwrite` must be a logical value")
-  if (isTRUE(name %in% DBI::dbListTables(sc)) && !isTRUE(overwrite)) {
+  if (DBI::dbExistsTable(sc, name) && !isTRUE(overwrite)) {
     stop(name, " exists within the Spark connection but overwrite = FALSE.")
   }
   tmp_file <- paste0(tempfile(), ".csv")

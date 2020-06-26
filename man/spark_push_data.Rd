@@ -14,6 +14,8 @@ spark_push_data(sc, x, name, overwrite = FALSE, ...)
 \item{name}{\code{character(1)}. The name to give to the data in the Spark
 context.}
 
+\item{overwrite}{\code{logical(1)}.}
+
 \item{...}{Additional arguments to be passed on to
 \code{\link[sparklyr:spark_read_csv]{sparklyr::spark_read_csv()}}.}
 }

@@ -9,7 +9,7 @@
 #'
 #' 1. The default, `"lazy"`, ensures that the query is registered within the
 #'    spark context but it is only evaluated, for example when the user collects
-#'    the data (see [spark_pull_df()] or [sparklyr::collect()]).
+#'    the data (see [spark_pull_data()] or [sparklyr::collect()]).
 #' 2. `"compute"` ensures that the query is executed and the resulting data are
 #'    stored within Spark's memory.
 #' 3. `"collect"` executes the query and returns the resulting data to R's
@@ -25,8 +25,8 @@
 #' @return
 #' One of two:
 #' 1. A `tbl_spark` reference to a Spark DataFrame in the event `type` is
-#'    compute or lazy
-#' 2. A `data.frame` in the event `type` is collect.
+#'    `"compute"` or `"lazy"`.
+#' 2. A `tibble` in the event `type` is `"collect"`.
 #'
 #' @importFrom DBI dbGetQuery
 #' @importFrom dplyr as_tibble sql tbl
@@ -39,13 +39,13 @@ spark_query_data <- function(
   name = NULL
 ) {
   type <- match.arg(type, choices = c("lazy", "compute", "collect"))
-  if (inherits(x, "sql")) x <- dplyr::sql(x)
+  if (!inherits(x, "sql")) x <- dplyr::sql(x)
   res <- if (type == "collect") {
-    DBI::dbGetQuery(sc, x)
+    dplyr::as_tibble(DBI::dbGetQuery(sc, x))
   } else {
     res <- sparklyr::sdf_register(dplyr::tbl(sc, x), name = name)
     if (type == "compute") res <- sparklyr::tbl_cache(sc, name)
     res
   }
-  dplyr::as_tibble(res)
+  res
 }

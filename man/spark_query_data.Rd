@@ -21,8 +21,8 @@ details for more.}
 One of two:
 \enumerate{
 \item A \code{tbl_spark} reference to a Spark DataFrame in the event \code{type} is
-compute or lazy
-\item A \code{data.frame} in the event \code{type} is collect.
+\code{"compute"} or \code{"lazy"}.
+\item A \code{tibble} in the event \code{type} is \code{"collect"}.
 }
 }
 \description{
@@ -35,7 +35,7 @@ three scenarios:
 \enumerate{
 \item The default, \code{"lazy"}, ensures that the query is registered within the
 spark context but it is only evaluated, for example when the user collects
-the data (see \code{\link[=spark_pull_df]{spark_pull_df()}} or \code{\link[sparklyr:collect]{sparklyr::collect()}}).
+the data (see \code{\link[=spark_pull_data]{spark_pull_data()}} or \code{\link[sparklyr:collect]{sparklyr::collect()}}).
 \item \code{"compute"} ensures that the query is executed and the resulting data are
 stored within Spark's memory.
 \item \code{"collect"} executes the query and returns the resulting data to R's
