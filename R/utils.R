@@ -1,18 +1,23 @@
-#' Check A Spark Object's Validity
+#' Check whether an object is a `tbl_spark` object
 #'
-#' Check whether an R object is a valid, open Spark connection.
-#'
-#' @param sc An R object
+#' @param x An R object.
 #'
 #' @return
-#' `logical(1)`
+#' A `logical(1)` vector.
 #'
-#' @importFrom sparklyr connection_is_open
-#' @noRd
-is_open_spark_connection <- function(sc) {
-  if (inherits(sc, "spark_connection")) {
-    sparklyr::connection_is_open(sc)
-  } else {
-    FALSE
-  }
+#' @export
+is.tbl_spark <- function(x) {
+  inherits(x = x, what = "tbl_spark")
+}
+
+#' Check whether an object is a `sql` query
+#'
+#' @param An R object.
+#'
+#' @return
+#' A `logical(1)` vector.
+#'
+#' @export
+is.sql <- function(x) {
+  inherits(x = x, what = "sql")
 }

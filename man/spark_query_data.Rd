@@ -4,18 +4,18 @@
 \alias{spark_query_data}
 \title{Query a Spark DataFrame}
 \usage{
-spark_query_data(sc, x, type = c("lazy", "compute", "collect"), name = NULL)
+spark_query_data(sc, qry, name, type = c("lazy", "compute", "collect"))
 }
 \arguments{
 \item{sc}{A \code{spark_connection}.}
 
-\item{x}{A SQL query.}
+\item{qry}{A SQL query.}
+
+\item{name}{\code{character(1)}. If not \code{NULL}, the resulting object will be
+registered within the Spark context under this name.}
 
 \item{type}{\code{character(1)}. One of "lazy", "compute" or "collect". See
 details for more.}
-
-\item{name}{\code{character(1)}. The name to be given to the Spark DataFrame if
-\code{type} is not \code{collect} (default: \code{NULL}).}
 }
 \value{
 One of two:
@@ -33,12 +33,38 @@ to R's memory.
 This function differs depending on the \code{type} given by the user. There are
 three scenarios:
 \enumerate{
-\item The default, \code{"lazy"}, ensures that the query is registered within the
-spark context but it is only evaluated, for example when the user collects
-the data (see \code{\link[=spark_pull_data]{spark_pull_data()}} or \code{\link[sparklyr:collect]{sparklyr::collect()}}).
+\item The default, \code{"lazy"}, is only evaluated, for example when the user
+collects the data (see \code{\link[sparklyr:collect]{sparklyr::collect()}}).
 \item \code{"compute"} ensures that the query is executed and the resulting data are
 stored within Spark's memory.
 \item \code{"collect"} executes the query and returns the resulting data to R's
 memory.
 }
+}
+\examples{
+\dontrun{
+sc <- sparklyr::spark_connect(master = "local")
+mtcars_spark <- sparklyr::copy_to(dest = sc, df = mtcars)
+
+# By default, queries are executed lazily
+spark_query_data(sc = sc, qry = "select mpg from mtcars")
+
+# But we can cache the results
+cache <- spark_query_data(
+  sc = sc,
+  qry = "select mpg from mtcars",
+  name = "mpg_mtcars",
+  type = "compute"
+)
+# And gather the results
+spark_collect_data(x = "mpg_mtcars", sc = sc)
+
+# Or we can collect the data instantly
+spark_query_data(
+  sc = sc,
+  qry = "select disp from mtcars",
+  type = "collect"
+)
+}
+
 }

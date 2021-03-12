@@ -4,7 +4,7 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#",
@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-`{sparklio}` extends the `{sparklyr}` IO interface by providing a faster and cleaner interface for pushing and pulling data between R and Spark amongst other things.
+`{sparklio}` extends the `{sparklyr}` IO interface by providing additional utility functions for querying data, dropping tables and collecting data into R.
 
 ## Installation
 
@@ -31,58 +31,61 @@ remotes::install_github("nathaneastwood/sparklio")
 
 ## Usage
 
-```{r}
+```{r connection}
 library(sparklio)
 sc <- sparklyr::spark_connect(master = "local")
+mtcars_spark <- sparklyr::copy_to(sc, mtcars)
 ```
 
-`{sparklio}` allows the user to:
+### Collect Data From Spark Into R
 
-* push data from R to Spark:
+```{r collect}
+# Using the Spark table name
+spark_collect_data(x = "mtcars", sc = sc)
 
-```{r}
-# This is equivalent to dplyr::copy_to() but it faster
-mtcars_spark <- spark_push_data(sc, mtcars, "mtcars")
+
+# Or using the R reference object
+spark_collect_data(x = mtcars_spark)
 ```
 
-* pull data from Spark into R:
+### Querying Data In Spark
 
-```{r}
-mtcars <- spark_pull_data(mtcars, sc)
-mtcars <- spark_pull_data("mtcars", sc)
-mtcars <- spark_pull_data(mtcars_spark)
-```
-
-* query data in Spark
-
-```{r}
-mpg <- spark_query_data(
-  sc,
-  "SELECT mpg FROM mtcars",
-  type = "lazy",
-  name = "mpg"
+```{r query}
+# Lazily query data in Spark and always return a `tibble`
+spark_query_data(
+  sc = sc,
+  qry = "SELECT mpg FROM mtcars"
 )
-```
 
-```{r}
-mpg <- spark_query_data(
-  sc,
-  "SELECT mpg FROM mtcars",
-  type = "compute",
-  name = "mpg"
+
+# We can specify whether we want to cache the data
+qry <- spark_query_data(
+  sc = sc,
+  qry = "SELECT mpg FROM mtcars",
+  name = "mpg_mtcars",
+  type = "compute"
 )
-```
+spark_collect_data(x = "mpg_mtcars", sc = sc)
 
-```{r}
-mpg <- spark_query_data(
-  sc,
-  "SELECT mpg FROM mtcars",
+
+# Or if we want to collect the data into R itself
+spark_query_data(
+  sc = sc,
+  qry = "SELECT mpg FROM mtcars",
   type = "collect"
 )
 ```
 
-* drop data from Spark
+### Droping Data From Spark
 
-```{r}
-spark_drop_table(sc, "mtcars")
+```{r drop_single}
+# We can drop single tables by name
+spark_drop_table(sc = sc, "mtcars")
+```
+
+```{r drop_all}
+# Or drop all tables at once
+mtcars_spark <- sparklyr::copy_to(sc, mtcars)
+airquality_spark <- sparklyr::copy_to(sc, airquality)
+spark_drop_all_tables(sc = sc)
 ```

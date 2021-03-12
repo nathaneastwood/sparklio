@@ -6,20 +6,38 @@
 \alias{spark_drop_all_tables}
 \title{Drop tables from a Spark session}
 \usage{
-spark_drop_table(sc, tbl)
+spark_drop_table(sc, name)
 
 spark_drop_all_tables(sc)
 }
 \arguments{
 \item{sc}{A \code{spark_connection}.}
 
-\item{tbl}{\code{character(1)}. The name of the table to remove.}
+\item{name}{\code{character(1)}. The name of the table to remove.}
 }
 \value{
-\code{logical(1)} referring to whether the removal was successful (\code{TRUE})
-or not (\code{FALSE}).
+\itemize{
+\item \code{spark_drop_table()}: A \code{logical(1)} referring to whether the removal was
+successful (\code{TRUE}) or not (\code{FALSE}).
+\item \code{spark_drop_all_tables()}: A \code{list()} of \code{logical(1)} vectors indicating
+whether the removals were successful (\code{TRUE}) or not (\code{FALSE}).
+}
 }
 \description{
-This functionality is similar to \code{dbplyr::drop_db_table()} but invokes the
-Spark method without the long call stack.
+Remove either a single table or all tables from a Spark session.
+}
+\examples{
+\dontrun{
+sc <- sparklyr::spark_connect(master = "local")
+mtcars_spark <- sparklyr::copy_to(dest = sc, df = mtcars)
+airquality_spark <- sparklyr::copy_to(dest = sc, df = airquality)
+cars_spark <- sparklyr::copy_to(dest = sc, df = cars)
+
+# We can drop a single table
+spark_drop_table(sc = sc, name = "mtcars")
+
+# Or all tables
+spark_drop_all_tables(sc = sc)
+}
+
 }
